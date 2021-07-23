@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
+#include "global.h"
 #include "game.h"
 
 static int monster_attack(void* self, int damage)

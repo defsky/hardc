@@ -4,8 +4,8 @@
 #include <time.h>
 #include <assert.h>
 
+#include "global.h"
 #include "game.h"
-
 
 int     process_input(Map *game)
 {

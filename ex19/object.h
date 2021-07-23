@@ -1,9 +1,7 @@
 #ifndef _object_h_
 #define _object_h_
 
-typedef enum {
-    NORTH, SOUTH, EAST, WEST
-} Direction;
+#include "global.h"
 
 typedef struct {
     char*   description;
