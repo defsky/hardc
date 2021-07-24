@@ -22,17 +22,17 @@ all: $(TARGET) $(SO_TARGET) tests
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
-$(TARGET): CFLAGS += -fPIC
 $(TARGET): $(OBJECTS)
 	@mkdir -p build bin
 	ar rcs $@ $(OBJECTS)
 	ranlib $@
 
-$(OBJECTS): CFLAGS += -c
+$(OBJECTS): CFLAGS += -fPIC -c
 $(OBJECTS): %.o:%.c %.h
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(SO_TARGET): $(OBJECTS)
+	@mkdir -p build bin
 	$(CC) -shared -o $@ $(OBJECTS)
 
 build:
@@ -42,7 +42,7 @@ build:
 # The Unit Tests
 .PHONY: tests valgrind clean check install all build
 #tests: CFLAGS += -Lbuild -l$(TARGET_LIB_NAME)
-tests: $(TESTS)
+tests: $(TESTS) $(SO_TARGET)
 	sh ./tests/runtests.sh
 
 $(TESTS): %_tests:%_tests.o
