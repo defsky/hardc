@@ -1,2 +1,7 @@
 hardc
+*.log
+*.swp
 *.o
+*.a
+*.so
+*_tests
