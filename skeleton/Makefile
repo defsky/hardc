@@ -11,7 +11,7 @@ TEST_OBJ=$(TEST_SRC:.c=.o)
 
 TESTS=$(patsubst %.c,%,$(TEST_SRC))
 
-TARGET=build/libYOUR_LIBRARY.a
+TARGET=build/libex29.a
 
 TARGET_LIB_NAME=$(patsubst build/lib%.a,%,$(TARGET))
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
@@ -22,17 +22,17 @@ all: $(TARGET) $(SO_TARGET) tests
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
-$(TARGET): CFLAGS += -fPIC
 $(TARGET): $(OBJECTS)
 	@mkdir -p build bin
 	ar rcs $@ $(OBJECTS)
 	ranlib $@
 
-$(OBJECTS): CFLAGS += -c
+$(OBJECTS): CFLAGS += -fPIC -c
 $(OBJECTS): %.o:%.c %.h
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(SO_TARGET): $(OBJECTS)
+	@mkdir -p build bin
 	$(CC) -shared -o $@ $(OBJECTS)
 
 build:
@@ -41,12 +41,12 @@ build:
 
 # The Unit Tests
 .PHONY: tests valgrind clean check install all build
-# tests: CFLAGS += -Lbuild -l$(TARGET_LIB_NAME)
-tests: $(TESTS)
+#tests: CFLAGS += -Lbuild -l$(TARGET_LIB_NAME)
+tests: $(TESTS) $(SO_TARGET)
 	sh ./tests/runtests.sh
 
-$(TESTS): %_tests:%_tests.o $(TARGET)
-	$(CC) $(CFLAGS) -o $@ $< $(TARGET)
+$(TESTS): %_tests:%_tests.o
+	$(CC) $(CFLAGS) $(LIBS) -o $@ $<
 
 $(TEST_OBJ): CFLAGS += -c
 $(TEST_OBJ): %.o:%.c

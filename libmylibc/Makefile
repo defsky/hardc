@@ -11,7 +11,7 @@ TEST_OBJ=$(TEST_SRC:.c=.o)
 
 TESTS=$(patsubst %.c,%,$(TEST_SRC))
 
-TARGET=build/libex29.a
+TARGET=build/libmylibc.a
 
 TARGET_LIB_NAME=$(patsubst build/lib%.a,%,$(TARGET))
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
@@ -45,8 +45,13 @@ build:
 tests: $(TESTS) $(SO_TARGET)
 	sh ./tests/runtests.sh
 
-$(TESTS): %_tests:%_tests.o
-	$(CC) $(CFLAGS) $(LIBS) -o $@ $<
+# link dynamic lib
+#$(TESTS): %_tests:%_tests.o
+#	$(CC) $(CFLAGS) $(LIBS) -o $@ $<
+
+# link static lib
+$(TESTS): %_tests:%_tests.o $(TARGET)
+	$(CC) $(CFLAGS) -o $@ $< $(TARGET)
 
 $(TEST_OBJ): CFLAGS += -c
 $(TEST_OBJ): %.o:%.c
