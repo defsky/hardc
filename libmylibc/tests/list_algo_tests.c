@@ -32,12 +32,23 @@ int is_sorted(List* words)
     return 1;
 }
 
+void print_list(char* flag, List* l)
+{
+    debug("%s", flag);
+
+    LIST_FOREACH(l,first,next,cur) {
+        debug("%s", (char*)cur->value);
+    }
+}
+
 char* test_bubble_sort()
 {
     List* words = create_words();
 
+    print_list("before sort", words);
     int rc = list_bubble_sort(words, (LIST_CMP_FUNC)strcmp);
     mu_assert(rc == 0, "Bubble sort failed.");
+    print_list("after sort", words);
     mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
 
     rc = list_bubble_sort(words, (LIST_CMP_FUNC)strcmp);

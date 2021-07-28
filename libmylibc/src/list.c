@@ -121,10 +121,44 @@ error:
 
 int     list_bubble_sort(List* list, LIST_CMP_FUNC cmp_func)
 {
+    check(list != NULL, "List can not be null");
+    check(cmp_func != NULL ,"compare function can not be null");
+
+    ListNode* current_node =  list->first;
+    ListNode* next_node = NULL;
+    while (current_node != NULL) {
+        next_node = current_node->next;
+
+        if (next_node != NULL && cmp_func(current_node->value, next_node->value) > 0) {
+            current_node->next = next_node->next;
+            if (current_node->next != NULL) {
+                current_node->next->prev = current_node;
+            }
+            next_node->next = current_node;
+
+            next_node->prev = current_node->prev;
+            if (next_node->prev != NULL) {
+                next_node->prev->next = next_node;
+            }
+            current_node->prev = next_node;
+        } else {
+            current_node = next_node;
+        }
+    }
+
     return 0;
+
+error:
+    return 1;
 }
 
 List*   list_merge_sort(List* list, LIST_CMP_FUNC cmp_func)
 {
+    check(list != NULL, "List can not be null");
+    check(cmp_func != NULL ,"compare function can not be null");
+
+    return NULL;
+
+error:
     return NULL;
 }
