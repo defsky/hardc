@@ -7,6 +7,18 @@ List*   list_create()
     return calloc(1, sizeof(List));
 }
 
+int     list_length(List* list)
+{
+    int len = 0;
+
+    ListNode* node = NULL;
+    for (node = list->first; node != NULL; node = node->next) {
+        len ++;
+    }
+
+    return len;
+}
+
 void    list_destroy(List* list)
 {
     LIST_FOREACH(list, first, next, cur){
@@ -126,24 +138,32 @@ int     list_bubble_sort(List* list, LIST_CMP_FUNC cmp_func)
 
     ListNode* current_node =  list->first;
     ListNode* next_node = NULL;
+    void* v = NULL;
+
     while (current_node != NULL) {
-        next_node = current_node->next;
+        for (next_node = current_node->next; next_node != NULL; next_node = next_node->next) {
+            if (cmp_func(current_node->value, next_node->value) > 0) {
+                // current_node->next = next_node->next;
+                // if (current_node->next != NULL) {
+                //     current_node->next->prev = current_node;
+                // } else {
+                //     list->last = current_node;
+                // }
+                // next_node->next = current_node;
 
-        if (next_node != NULL && cmp_func(current_node->value, next_node->value) > 0) {
-            current_node->next = next_node->next;
-            if (current_node->next != NULL) {
-                current_node->next->prev = current_node;
+                // next_node->prev = current_node->prev;
+                // if (next_node->prev != NULL) {
+                //     next_node->prev->next = next_node;
+                // } else {
+                //     list->first = next_node;
+                // }
+                // current_node->prev = next_node;
+                v = current_node->value;
+                current_node->value = next_node->value;
+                next_node->value = v;
             }
-            next_node->next = current_node;
-
-            next_node->prev = current_node->prev;
-            if (next_node->prev != NULL) {
-                next_node->prev->next = next_node;
-            }
-            current_node->prev = next_node;
-        } else {
-            current_node = next_node;
         }
+        current_node = current_node->next;
     }
 
     return 0;

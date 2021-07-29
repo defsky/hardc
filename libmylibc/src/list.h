@@ -14,6 +14,7 @@ typedef struct list {
 } List;
 
 List*   list_create();
+int     list_length(List* list);
 void    list_destroy(List* list);
 void    list_clear(List* list);
 void    list_clear_destroy(List *list);
