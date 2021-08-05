@@ -6,9 +6,6 @@ for i in tests/*_tests
 do
     if test -f $i
     then
-        echo ""
-        echo "Running test: $i"
-        echo "-----------------------------"
         if $VALGRIND ./$i 2>>tests/tests.log
         then
             echo "-----------------------------"
