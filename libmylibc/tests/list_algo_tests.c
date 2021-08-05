@@ -57,10 +57,8 @@ char* test_bubble_sort()
 {
     List* words = create_words();
 
-    print_list("before sort", words);
     int rc = list_bubble_sort(words, (LIST_CMP_FUNC)strcmp);
     mu_assert(rc == 0, "Bubble sort failed.");
-    print_list("after sort", words);
     mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
     mu_assert(NUM_VALUES == count_list(words),"After sorted, words count should equal to before.");
 
